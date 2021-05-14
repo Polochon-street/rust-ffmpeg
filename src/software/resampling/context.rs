@@ -6,7 +6,7 @@ use libc::c_int;
 use std::ffi::c_void;
 use util::format;
 use Dictionary;
-use {frame, ChannelLayout, Error};
+use {frame, option, ChannelLayout, Error};
 
 #[derive(Eq, PartialEq, Copy, Clone)]
 pub struct Definition {
@@ -184,3 +184,15 @@ impl Drop for Context {
         }
     }
 }
+
+unsafe impl option::Target for Context {
+    fn as_ptr(&self) -> *const c_void {
+        self.ptr as *const _
+    }
+
+    fn as_mut_ptr(&mut self) -> *mut c_void {
+        self.ptr as *mut _
+    }
+}
+
+impl option::Settable for Context {}
